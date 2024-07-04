@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Flagman WB</title>
+</head>
+<body class="bg-dark vh-100 d-flex justify-content-center align-items-center">
+<div class="d-flex flex-column gap-1" style="width: 400px">
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="user-price">Цена покупателя</label>
+        <input type="number" class="form-control" min="0" value="10000" id="user-price">
+    </div>
+    <div class="card p-2 w-100">
+        <div class="">
+            <label for="sale" class="form-label">Скидка:</label>
+            <span class="fw-bold" id="value-sale">63</span>
+            <span>%</span>
+        </div>
+        <input type="range" class="form-range" id="sale" step="0.5" min="0" max="100" value="63">
+    </div>
+    <div class="card p-2 w-100">
+        <div class="">
+            <label for="sale-wb" class="form-label">Скидка ВБ:</label>
+            <span class="fw-bold" id="value-sale-wb">19</span>
+            <span>%</span>
+        </div>
+        <input type="range" class="form-range" id="sale-wb" step="0.5" min="0" max="100" value="19">
+    </div>
+    <div class="input-group mt-3">
+        <label class="input-group-text" for="wb-price">Цена товара</label>
+        <input type="text" class="form-control" id="wb-price" readonly>
+    </div>
+</div>
+<script>
+    const $userPrice = document.getElementById('user-price')
+    const $wbPrice = document.getElementById('wb-price')
+
+    const $wbSale = document.getElementById('sale-wb')
+    const $wbSaleValue = document.getElementById('value-sale-wb')
+
+    const $sale = document.getElementById('sale')
+    const $saleValue = document.getElementById('value-sale')
+
+    const calculate = () => {
+      const value = +$userPrice.value
+      const sale = +$sale.value
+      const wbSale = +$wbSale.value
+
+      if (isNaN(value) || isNaN(sale) || isNaN(wbSale)) {
+        return
+      }
+
+      $wbPrice.value = (value / (1 - wbSale / 100) / (1 - sale / 100)).toLocaleString()
+    }
+
+    $userPrice.oninput = () => calculate()
+
+    $wbSale.oninput = (e) => {
+      const value = e.target.value
+
+      if (isNaN(value)) {
+        return
+      }
+
+      $wbSaleValue.innerHTML = value
+      calculate()
+    }
+
+    $sale.oninput = (e) => {
+      const value = e.target.value
+
+      if (isNaN(value)) {
+        return
+      }
+
+      $saleValue.innerHTML = value
+      calculate()
+    }
+</script>
+</body>
+</html>
